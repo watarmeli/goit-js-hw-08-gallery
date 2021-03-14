@@ -31,6 +31,9 @@ function createGalleryItem(galleryItems) {
 };
 
 function openModalClick(evt) {
+    if (!evt.target.classList.contains('gallery__image')) {
+        return;
+    }
     evt.preventDefault()
     lightboxEl.classList.add('is-open');
     lightboxImgEl.setAttribute('src', evt.target.getAttribute('data-source'));
