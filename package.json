@@ -2,7 +2,7 @@
   "name": "goit-js-hw-08-gallery",
   "version": "1.0.0",
   "description": "goit-js-hw-08-gallery",
-  "main": "gallery-items.js",
+  "main": "./js/script.js",
   "scripts": {
     "dev": "parcel ./index.html",
     "build": "parcel build ./index.html --public-url /goit-js-hw-08-gallery/",
