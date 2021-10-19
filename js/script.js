@@ -9,8 +9,6 @@ gallery.insertAdjacentHTML('afterbegin', galleryItemsMarkup);
 
 gallery.addEventListener('click', openModalClick);
 lightboxEl.addEventListener('click', closeModal);
-window.addEventListener('keydown', closeModal);
-window.addEventListener('keydown', imgSlide);
 
 function createGalleryItem(galleryItems) {
   return galleryItems
@@ -37,6 +35,11 @@ function createGalleryItem(galleryItems) {
 let currentIndex = 0;
 const srcArray = galleryItems.map(src => src.original);
 
+function addKeydownListener(evt) {
+  closeModal(evt);
+  imgSlide(evt);
+}
+
 function openModalClick(evt) {
   if (!evt.target.classList.contains('gallery__image')) {
     return;
@@ -45,11 +48,13 @@ function openModalClick(evt) {
   lightboxEl.classList.add('is-open');
   lightboxImgEl.setAttribute('src', evt.target.getAttribute('data-source'));
   currentIndex = srcArray.indexOf(lightboxImgEl.getAttribute('src'));
+  window.addEventListener('keydown', addKeydownListener);
 }
 
 function closeModalClick() {
   lightboxEl.classList.remove('is-open');
   lightboxImgEl.removeAttribute('src');
+  window.removeEventListener('keydown', addKeydownListener);
 }
 
 function closeModal(evt) {
@@ -71,11 +76,17 @@ function imgSlide(evt) {
   ) {
     return;
   }
-  if (evt.code === 'ArrowLeft' && currentIndex !== 0) {
+  if (evt.code === 'ArrowLeft') {
+    if (currentIndex === 0) {
+      return;
+    }
     currentIndex -= 1;
     lightboxImgEl.setAttribute('src', srcArray[currentIndex]);
   }
-  if (evt.code === 'ArrowRight' && currentIndex !== srcArray.length - 1) {
+  if (evt.code === 'ArrowRight') {
+    if (currentIndex === srcArray.length - 1) {
+      return;
+    }
     currentIndex += 1;
     lightboxImgEl.setAttribute('src', srcArray[currentIndex]);
   }
